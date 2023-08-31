@@ -13,6 +13,7 @@
 #include "EnhancedInputSubSystems.h"
 #include "Kismet/GameplayStatics.h"
 #include "MyActor.h"
+#include "MyActorComponent.h"
 
 
 // Sets default values
@@ -53,6 +54,8 @@ AMyPawn::AMyPawn()
 
 	//Components
 	floatingMovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("floatingMovementComponent"));
+	MyActorComponent = CreateDefaultSubobject<UMyActorComponent>(TEXT("MyActorComponent"));
+
 
 }
 
@@ -61,7 +64,9 @@ AMyPawn::AMyPawn()
 void AMyPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	MyActorComponent->AddSceneComponent(RightPropeller);
+	MyActorComponent->AddSceneComponent(LeftPropeller);
 }
 
 // Called every frame

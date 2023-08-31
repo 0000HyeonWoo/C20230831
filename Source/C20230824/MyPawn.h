@@ -13,6 +13,7 @@ class UFloatingPawnMovement;
 class USpringArmComponent;
 class UCameraComponent;
 class UArrowComponent;
+class UMyActorComponent;
 
 UCLASS()
 class C20230824_API AMyPawn : public APawn
@@ -64,15 +65,17 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
 	UFloatingPawnMovement* floatingMovementComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
+	UMyActorComponent* MyActorComponent;
 
 public:
 	//Rotate Speed
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")
-	float RoatePropellerSpeed = 3200.f;
+	double RoatePropellerSpeed = 3200.f;
 
 	//Boost Input
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")
-	float BoostValue = 0.5f;
+	double BoostValue = 0.5f;
 
 
 protected:
