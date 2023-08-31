@@ -6,5 +6,6 @@
 
 AMyGameModeBase::AMyGameModeBase()
 {
+	//Set Default Value
 	PlayerControllerClass = AMyPlayerController::StaticClass();
 }

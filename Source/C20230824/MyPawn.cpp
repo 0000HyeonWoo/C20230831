@@ -50,13 +50,23 @@ AMyPawn::AMyPawn()
 	//Arrow
 	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
 	Arrow->SetupAttachment(RootComponent);
-
+	Arrow->AddLocalOffset(FVector(100.f, 0.f, 0.f));
 
 	//Components
 	floatingMovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("floatingMovementComponent"));
 	MyActorComponent = CreateDefaultSubobject<UMyActorComponent>(TEXT("MyActorComponent"));
 
-
+	// " _C " <- 레퍼런스 뒤에 추가해야함
+	//#include와 비슷함
+	static ConstructorHelpers::FClassFinder<AMyActor> RocketClass(TEXT("/Script/Engine.Blueprint'/Game/Blueprints/BP_Rocket.BP_Rocket_C'"));
+	if (!RocketClass.Succeeded())
+	{
+		UE_LOG(LogClass, Warning, TEXT("RocketClass Fail"));
+	}
+	else
+	{
+		RocketTemplate = RocketClass.Class;
+	}
 }
 
 
@@ -65,6 +75,8 @@ void AMyPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//MyActorComponent = Add Rotate to Target SceneComponent
+	//Add Rotate to Propeller 
 	MyActorComponent->AddSceneComponent(RightPropeller);
 	MyActorComponent->AddSceneComponent(LeftPropeller);
 }
@@ -98,22 +110,39 @@ void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AMyPawn::Boost(const FInputActionValue& Value)
 {
+	//Speed Up
 	BoostValue = 1.0f;
 }
 
 void AMyPawn::UnBoost(const FInputActionValue& Value)
 {
+	//Speed Normal
 	BoostValue = 0.5f;
 }
 
 void AMyPawn::Fire(const FInputActionValue& Value)
 {
+	if (RocketTemplate == nullptr)
+	{
+		return;
+	}
+
+	//In Bluepirnt, Spawn Rocket Function
+	AActor* SpawnActor = GetWorld()->SpawnActor<AActor>(RocketTemplate,
+		Arrow->GetComponentLocation(), Arrow->GetComponentRotation());
 }
 
 void AMyPawn::PitchAndRoll(const FInputActionValue& Value)
 {
+	//Get 2D Axis Value
 	FVector2D Input2DVector = Value.Get<FVector2D>();
 
+	if (Input2DVector.IsZero())
+	{
+		return;
+	}
+
+	//Set Pitch, Roll Value
 	float Pitch;
 	float Roll;
 
@@ -121,12 +150,14 @@ void AMyPawn::PitchAndRoll(const FInputActionValue& Value)
 
 	Roll = Input2DVector.Y * UGameplayStatics::GetWorldDeltaSeconds(GetController()->GetWorld()) * 60.f;
 
+	//Set Rotate Value for Under Function
 	FRotator PitchRotator;
 	PitchRotator = { Pitch, 0.f, 0.f };
 
 	FRotator RollRotator;
-	RollRotator = { 0.f, Roll, 0.f };
+	RollRotator = { 0.f,  0.f ,Roll };
 
+	//Add Rotation by Value
 	AddActorLocalRotation(PitchRotator);
 	AddActorLocalRotation(RollRotator);
 

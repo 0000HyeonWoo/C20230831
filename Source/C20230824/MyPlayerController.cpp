@@ -10,6 +10,7 @@ void AMyPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//Set IMC_Input
 	UEnhancedInputLocalPlayerSubsystem* LocalPlayerSystem
 		= ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 

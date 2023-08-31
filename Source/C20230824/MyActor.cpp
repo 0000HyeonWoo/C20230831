@@ -17,6 +17,9 @@ AMyActor::AMyActor()
 
 	Box->SetBoxExtent(FVector(22.f, 5.f, 5.f));
 
+	//Overlap Event bool
+	Box->SetGenerateOverlapEvents(true);
+
 	Body = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
 	Body->SetupAttachment(RootComponent);
 
@@ -34,12 +37,30 @@ void AMyActor::BeginPlay()
 	Super::BeginPlay();
 
 	SetLifeSpan(3.0f);
+
+	//함수의 주소라서 & 붙이기
+	OnActorBeginOverlap.AddDynamic(this, &AMyActor::ProcessBeginOverlap);
+	//OnActorBeginOverlap.RemoveDynamic(this, &AMyActor::ProcessBeginOverlap);
+	//OnActorBeginOverlap.RemoveAll(this);
 }
 
 // Called every frame
 void AMyActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+}
+
+void AMyActor::ProcessBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
+{
+	UE_LOG(LogClass, Warning, TEXT("ProcessBeginOverlap"));
+	CallBlueprintFunctionOrCPP();
+	//CallBlueprintFunctionJustBP();
+}
+
+void AMyActor::CallBlueprintFunctionOrCPP_Implementation()
+{
+	UE_LOG(LogClass, Warning, TEXT("Execute CPP"));
 
 }
 

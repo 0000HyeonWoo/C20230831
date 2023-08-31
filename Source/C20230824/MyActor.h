@@ -28,6 +28,19 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	//딜리게이트는 UFUNCTION 꼭 적기
+	UFUNCTION()
+	void ProcessBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void CallBlueprintFunctionJustBP();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void CallBlueprintFunctionOrCPP();
+
+	void CallBlueprintFunctionOrCPP_Implementation();
+
+
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
 	UBoxComponent* Box;

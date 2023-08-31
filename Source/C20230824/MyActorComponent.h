@@ -26,11 +26,14 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
+	//Array
 	TArray<USceneComponent*> SceneArray;
 
 public:
+	//Add TargetComponent to Array
 	void AddSceneComponent(USceneComponent* TargetComponent);
-
+	
+	//Rotate Values
 	FRotator RotateAxis;
 	double RotationSpeed;
 };

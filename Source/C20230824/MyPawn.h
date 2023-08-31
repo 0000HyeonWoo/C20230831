@@ -68,6 +68,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
 	UMyActorComponent* MyActorComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TSubclassOf<class AMyActor> RocketTemplate;
+
 public:
 	//Rotate Speed
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")

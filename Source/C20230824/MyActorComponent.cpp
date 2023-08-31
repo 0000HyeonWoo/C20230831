@@ -15,8 +15,10 @@ UMyActorComponent::UMyActorComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+	//Set RotateAxis
 	RotateAxis = { 0.f, 0.f, 1.f };
 
+	//Set Rotation Speed
 	RotationSpeed = 3200.f;
 }
 
@@ -37,7 +39,8 @@ void UMyActorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
-	for (int32 index = 0; index != SceneArray.Num(); ++index)
+	//Add Rotation to Scenecomponent in Array
+	for (int32 index = 0; index < SceneArray.Num(); ++index)
 	{
 		SceneArray[index]->AddLocalRotation(RotateAxis * RotationSpeed * DeltaTime, false);
 	}
@@ -45,7 +48,10 @@ void UMyActorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 
 void UMyActorComponent::AddSceneComponent(USceneComponent* TargetComponent)
 {
-	SceneArray.Add(TargetComponent);
-
+	if (TargetComponent)
+	{
+		//Add Target Component to Array
+		SceneArray.Add(TargetComponent);
+	}
 }
 
